@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option go_package = "github.com/pinbrain/gophkeeper/internal/proto";
+
+message TestReq{}
+message TestRes{}
+
+service VaultService {
+  rpc Test(TestReq) returns(TestRes);
+}
