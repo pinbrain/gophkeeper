@@ -96,19 +96,649 @@ func (*TestRes) Descriptor() ([]byte, []int) {
 	return file_internal_proto_vault_proto_rawDescGZIP(), []int{1}
 }
 
+type Item struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Data []byte `protobuf:"bytes,1,opt,name=data,proto3" json:"data,omitempty"`
+	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	Meta string `protobuf:"bytes,3,opt,name=meta,proto3" json:"meta,omitempty"`
+}
+
+func (x *Item) Reset() {
+	*x = Item{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Item) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Item) ProtoMessage() {}
+
+func (x *Item) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Item.ProtoReflect.Descriptor instead.
+func (*Item) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Item) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *Item) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *Item) GetMeta() string {
+	if x != nil {
+		return x.Meta
+	}
+	return ""
+}
+
+type AddDataReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Item *Item `protobuf:"bytes,1,opt,name=item,proto3" json:"item,omitempty"`
+}
+
+func (x *AddDataReq) Reset() {
+	*x = AddDataReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AddDataReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddDataReq) ProtoMessage() {}
+
+func (x *AddDataReq) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddDataReq.ProtoReflect.Descriptor instead.
+func (*AddDataReq) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AddDataReq) GetItem() *Item {
+	if x != nil {
+		return x.Item
+	}
+	return nil
+}
+
+type AddDataRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *AddDataRes) Reset() {
+	*x = AddDataRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *AddDataRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddDataRes) ProtoMessage() {}
+
+func (x *AddDataRes) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddDataRes.ProtoReflect.Descriptor instead.
+func (*AddDataRes) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{4}
+}
+
+type GetDataReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *GetDataReq) Reset() {
+	*x = GetDataReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetDataReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDataReq) ProtoMessage() {}
+
+func (x *GetDataReq) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDataReq.ProtoReflect.Descriptor instead.
+func (*GetDataReq) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetDataReq) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type GetDataRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Item *Item  `protobuf:"bytes,2,opt,name=item,proto3" json:"item,omitempty"`
+}
+
+func (x *GetDataRes) Reset() {
+	*x = GetDataRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetDataRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDataRes) ProtoMessage() {}
+
+func (x *GetDataRes) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDataRes.ProtoReflect.Descriptor instead.
+func (*GetDataRes) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetDataRes) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetDataRes) GetItem() *Item {
+	if x != nil {
+		return x.Item
+	}
+	return nil
+}
+
+type DeleteDataReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+}
+
+func (x *DeleteDataReq) Reset() {
+	*x = DeleteDataReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteDataReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteDataReq) ProtoMessage() {}
+
+func (x *DeleteDataReq) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteDataReq.ProtoReflect.Descriptor instead.
+func (*DeleteDataReq) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *DeleteDataReq) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteDataRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *DeleteDataRes) Reset() {
+	*x = DeleteDataRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DeleteDataRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteDataRes) ProtoMessage() {}
+
+func (x *DeleteDataRes) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteDataRes.ProtoReflect.Descriptor instead.
+func (*DeleteDataRes) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{8}
+}
+
+type UpdateDataReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Data []byte `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	Meta string `protobuf:"bytes,3,opt,name=meta,proto3" json:"meta,omitempty"`
+}
+
+func (x *UpdateDataReq) Reset() {
+	*x = UpdateDataReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateDataReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateDataReq) ProtoMessage() {}
+
+func (x *UpdateDataReq) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateDataReq.ProtoReflect.Descriptor instead.
+func (*UpdateDataReq) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *UpdateDataReq) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *UpdateDataReq) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *UpdateDataReq) GetMeta() string {
+	if x != nil {
+		return x.Meta
+	}
+	return ""
+}
+
+type UpdateDataRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UpdateDataRes) Reset() {
+	*x = UpdateDataRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateDataRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateDataRes) ProtoMessage() {}
+
+func (x *UpdateDataRes) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateDataRes.ProtoReflect.Descriptor instead.
+func (*UpdateDataRes) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{10}
+}
+
+type GetAllByTypeReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+}
+
+func (x *GetAllByTypeReq) Reset() {
+	*x = GetAllByTypeReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllByTypeReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllByTypeReq) ProtoMessage() {}
+
+func (x *GetAllByTypeReq) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllByTypeReq.ProtoReflect.Descriptor instead.
+func (*GetAllByTypeReq) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetAllByTypeReq) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+type GetAllByTypeRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Items []*GetAllByTypeRes_TypeItem `protobuf:"bytes,1,rep,name=items,proto3" json:"items,omitempty"`
+}
+
+func (x *GetAllByTypeRes) Reset() {
+	*x = GetAllByTypeRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllByTypeRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllByTypeRes) ProtoMessage() {}
+
+func (x *GetAllByTypeRes) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllByTypeRes.ProtoReflect.Descriptor instead.
+func (*GetAllByTypeRes) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetAllByTypeRes) GetItems() []*GetAllByTypeRes_TypeItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+type GetAllByTypeRes_TypeItem struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id   string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Meta string `protobuf:"bytes,2,opt,name=meta,proto3" json:"meta,omitempty"`
+}
+
+func (x *GetAllByTypeRes_TypeItem) Reset() {
+	*x = GetAllByTypeRes_TypeItem{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_internal_proto_vault_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetAllByTypeRes_TypeItem) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllByTypeRes_TypeItem) ProtoMessage() {}
+
+func (x *GetAllByTypeRes_TypeItem) ProtoReflect() protoreflect.Message {
+	mi := &file_internal_proto_vault_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllByTypeRes_TypeItem.ProtoReflect.Descriptor instead.
+func (*GetAllByTypeRes_TypeItem) Descriptor() ([]byte, []int) {
+	return file_internal_proto_vault_proto_rawDescGZIP(), []int{12, 0}
+}
+
+func (x *GetAllByTypeRes_TypeItem) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetAllByTypeRes_TypeItem) GetMeta() string {
+	if x != nil {
+		return x.Meta
+	}
+	return ""
+}
+
 var File_internal_proto_vault_proto protoreflect.FileDescriptor
 
 var file_internal_proto_vault_proto_rawDesc = []byte{
 	0x0a, 0x1a, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x2f, 0x76, 0x61, 0x75, 0x6c, 0x74, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x09, 0x0a, 0x07,
 	0x54, 0x65, 0x73, 0x74, 0x52, 0x65, 0x71, 0x22, 0x09, 0x0a, 0x07, 0x54, 0x65, 0x73, 0x74, 0x52,
-	0x65, 0x73, 0x32, 0x2a, 0x0a, 0x0c, 0x56, 0x61, 0x75, 0x6c, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69,
-	0x63, 0x65, 0x12, 0x1a, 0x0a, 0x04, 0x54, 0x65, 0x73, 0x74, 0x12, 0x08, 0x2e, 0x54, 0x65, 0x73,
-	0x74, 0x52, 0x65, 0x71, 0x1a, 0x08, 0x2e, 0x54, 0x65, 0x73, 0x74, 0x52, 0x65, 0x73, 0x42, 0x2f,
-	0x5a, 0x2d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x70, 0x69, 0x6e,
-	0x62, 0x72, 0x61, 0x69, 0x6e, 0x2f, 0x67, 0x6f, 0x70, 0x68, 0x6b, 0x65, 0x65, 0x70, 0x65, 0x72,
-	0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x73, 0x22, 0x42, 0x0a, 0x04, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61,
+	0x74, 0x61, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x12,
+	0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x79,
+	0x70, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x22, 0x27, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x44, 0x61, 0x74,
+	0x61, 0x52, 0x65, 0x71, 0x12, 0x19, 0x0a, 0x04, 0x69, 0x74, 0x65, 0x6d, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x05, 0x2e, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x04, 0x69, 0x74, 0x65, 0x6d, 0x22,
+	0x0c, 0x0a, 0x0a, 0x41, 0x64, 0x64, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x73, 0x22, 0x1c, 0x0a,
+	0x0a, 0x47, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x37, 0x0a, 0x0a, 0x47,
+	0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x73, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x19, 0x0a, 0x04, 0x69, 0x74, 0x65,
+	0x6d, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x05, 0x2e, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x04,
+	0x69, 0x74, 0x65, 0x6d, 0x22, 0x1f, 0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x44, 0x61,
+	0x74, 0x61, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x0f, 0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x44,
+	0x61, 0x74, 0x61, 0x52, 0x65, 0x73, 0x22, 0x47, 0x0a, 0x0d, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
+	0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x12, 0x0a, 0x04, 0x6d,
+	0x65, 0x74, 0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x22,
+	0x0f, 0x0a, 0x0d, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x73,
+	0x22, 0x25, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x79, 0x54, 0x79, 0x70, 0x65,
+	0x52, 0x65, 0x71, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x79, 0x70, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x74, 0x79, 0x70, 0x65, 0x22, 0x72, 0x0a, 0x0f, 0x47, 0x65, 0x74, 0x41, 0x6c,
+	0x6c, 0x42, 0x79, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x12, 0x2f, 0x0a, 0x05, 0x69, 0x74,
+	0x65, 0x6d, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x47, 0x65, 0x74, 0x41,
+	0x6c, 0x6c, 0x42, 0x79, 0x54, 0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x2e, 0x54, 0x79, 0x70, 0x65,
+	0x49, 0x74, 0x65, 0x6d, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x1a, 0x2e, 0x0a, 0x08, 0x54,
+	0x79, 0x70, 0x65, 0x49, 0x74, 0x65, 0x6d, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x32, 0x84, 0x02, 0x0a, 0x0c,
+	0x56, 0x61, 0x75, 0x6c, 0x74, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x23, 0x0a, 0x07,
+	0x41, 0x64, 0x64, 0x44, 0x61, 0x74, 0x61, 0x12, 0x0b, 0x2e, 0x41, 0x64, 0x64, 0x44, 0x61, 0x74,
+	0x61, 0x52, 0x65, 0x71, 0x1a, 0x0b, 0x2e, 0x41, 0x64, 0x64, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65,
+	0x73, 0x12, 0x23, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x12, 0x0b, 0x2e, 0x47,
+	0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x52, 0x65, 0x71, 0x1a, 0x0b, 0x2e, 0x47, 0x65, 0x74, 0x44,
+	0x61, 0x74, 0x61, 0x52, 0x65, 0x73, 0x12, 0x2c, 0x0a, 0x0a, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x44, 0x61, 0x74, 0x61, 0x12, 0x0e, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x44, 0x61, 0x74,
+	0x61, 0x52, 0x65, 0x71, 0x1a, 0x0e, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x44, 0x61, 0x74,
+	0x61, 0x52, 0x65, 0x73, 0x12, 0x2c, 0x0a, 0x0a, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x44, 0x61,
+	0x74, 0x61, 0x12, 0x0e, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x61, 0x52,
+	0x65, 0x71, 0x1a, 0x0e, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x44, 0x61, 0x74, 0x61, 0x52,
+	0x65, 0x73, 0x12, 0x32, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x79, 0x54, 0x79,
+	0x70, 0x65, 0x12, 0x10, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x79, 0x54, 0x79, 0x70,
+	0x65, 0x52, 0x65, 0x71, 0x1a, 0x10, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x79, 0x54,
+	0x79, 0x70, 0x65, 0x52, 0x65, 0x73, 0x12, 0x1a, 0x0a, 0x04, 0x54, 0x65, 0x73, 0x74, 0x12, 0x08,
+	0x2e, 0x54, 0x65, 0x73, 0x74, 0x52, 0x65, 0x71, 0x1a, 0x08, 0x2e, 0x54, 0x65, 0x73, 0x74, 0x52,
+	0x65, 0x73, 0x42, 0x2f, 0x5a, 0x2d, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
+	0x2f, 0x70, 0x69, 0x6e, 0x62, 0x72, 0x61, 0x69, 0x6e, 0x2f, 0x67, 0x6f, 0x70, 0x68, 0x6b, 0x65,
+	0x65, 0x70, 0x65, 0x72, 0x2f, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x6c, 0x2f, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -123,19 +753,44 @@ func file_internal_proto_vault_proto_rawDescGZIP() []byte {
 	return file_internal_proto_vault_proto_rawDescData
 }
 
-var file_internal_proto_vault_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_internal_proto_vault_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_internal_proto_vault_proto_goTypes = []any{
-	(*TestReq)(nil), // 0: TestReq
-	(*TestRes)(nil), // 1: TestRes
+	(*TestReq)(nil),                  // 0: TestReq
+	(*TestRes)(nil),                  // 1: TestRes
+	(*Item)(nil),                     // 2: Item
+	(*AddDataReq)(nil),               // 3: AddDataReq
+	(*AddDataRes)(nil),               // 4: AddDataRes
+	(*GetDataReq)(nil),               // 5: GetDataReq
+	(*GetDataRes)(nil),               // 6: GetDataRes
+	(*DeleteDataReq)(nil),            // 7: DeleteDataReq
+	(*DeleteDataRes)(nil),            // 8: DeleteDataRes
+	(*UpdateDataReq)(nil),            // 9: UpdateDataReq
+	(*UpdateDataRes)(nil),            // 10: UpdateDataRes
+	(*GetAllByTypeReq)(nil),          // 11: GetAllByTypeReq
+	(*GetAllByTypeRes)(nil),          // 12: GetAllByTypeRes
+	(*GetAllByTypeRes_TypeItem)(nil), // 13: GetAllByTypeRes.TypeItem
 }
 var file_internal_proto_vault_proto_depIdxs = []int32{
-	0, // 0: VaultService.Test:input_type -> TestReq
-	1, // 1: VaultService.Test:output_type -> TestRes
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	2,  // 0: AddDataReq.item:type_name -> Item
+	2,  // 1: GetDataRes.item:type_name -> Item
+	13, // 2: GetAllByTypeRes.items:type_name -> GetAllByTypeRes.TypeItem
+	3,  // 3: VaultService.AddData:input_type -> AddDataReq
+	5,  // 4: VaultService.GetData:input_type -> GetDataReq
+	7,  // 5: VaultService.DeleteData:input_type -> DeleteDataReq
+	9,  // 6: VaultService.UpdateData:input_type -> UpdateDataReq
+	11, // 7: VaultService.GetAllByType:input_type -> GetAllByTypeReq
+	0,  // 8: VaultService.Test:input_type -> TestReq
+	4,  // 9: VaultService.AddData:output_type -> AddDataRes
+	6,  // 10: VaultService.GetData:output_type -> GetDataRes
+	8,  // 11: VaultService.DeleteData:output_type -> DeleteDataRes
+	10, // 12: VaultService.UpdateData:output_type -> UpdateDataRes
+	12, // 13: VaultService.GetAllByType:output_type -> GetAllByTypeRes
+	1,  // 14: VaultService.Test:output_type -> TestRes
+	9,  // [9:15] is the sub-list for method output_type
+	3,  // [3:9] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_internal_proto_vault_proto_init() }
@@ -168,6 +823,150 @@ func file_internal_proto_vault_proto_init() {
 				return nil
 			}
 		}
+		file_internal_proto_vault_proto_msgTypes[2].Exporter = func(v any, i int) any {
+			switch v := v.(*Item); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[3].Exporter = func(v any, i int) any {
+			switch v := v.(*AddDataReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[4].Exporter = func(v any, i int) any {
+			switch v := v.(*AddDataRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[5].Exporter = func(v any, i int) any {
+			switch v := v.(*GetDataReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[6].Exporter = func(v any, i int) any {
+			switch v := v.(*GetDataRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[7].Exporter = func(v any, i int) any {
+			switch v := v.(*DeleteDataReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[8].Exporter = func(v any, i int) any {
+			switch v := v.(*DeleteDataRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[9].Exporter = func(v any, i int) any {
+			switch v := v.(*UpdateDataReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[10].Exporter = func(v any, i int) any {
+			switch v := v.(*UpdateDataRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[11].Exporter = func(v any, i int) any {
+			switch v := v.(*GetAllByTypeReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[12].Exporter = func(v any, i int) any {
+			switch v := v.(*GetAllByTypeRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_internal_proto_vault_proto_msgTypes[13].Exporter = func(v any, i int) any {
+			switch v := v.(*GetAllByTypeRes_TypeItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -175,7 +974,7 @@ func file_internal_proto_vault_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_internal_proto_vault_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

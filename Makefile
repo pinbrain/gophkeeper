@@ -17,7 +17,7 @@ proto:
 
 migration_down:
 	@goose -dir internal/storage/postgres/migrations \
-		postgres "host=192.168.0.27 port=5412 user=gophermart password=gophermart dbname=gophermart sslmode=disable" \
+		postgres "host=192.168.0.27 port=5412 user=keeper password=keeper dbname=keeper sslmode=disable" \
 		down
 
 migration_create:

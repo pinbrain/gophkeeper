@@ -1,19 +1,23 @@
 package logger
 
-import "github.com/sirupsen/logrus"
+import (
+	"github.com/sirupsen/logrus"
+)
 
-var Log = logrus.New()
-
-func Initialize(level string) error {
+func NewLogger(level string) (*logrus.Logger, error) {
 	var err error
 	logLvl := logrus.InfoLevel
 	if level != "" {
 		logLvl, err = logrus.ParseLevel(level)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
-	Log.SetLevel(logLvl)
-	Log.SetFormatter(&logrus.JSONFormatter{})
-	return nil
+	logger := logrus.New()
+	logger.SetLevel(logLvl)
+	logger.SetFormatter(&logrus.JSONFormatter{})
+	// if logLvl == logrus.DebugLevel {
+	// 	logger.SetReportCaller(true)
+	// }
+	return logger, nil
 }

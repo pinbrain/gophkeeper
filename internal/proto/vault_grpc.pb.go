@@ -19,13 +19,23 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	VaultService_Test_FullMethodName = "/VaultService/Test"
+	VaultService_AddData_FullMethodName      = "/VaultService/AddData"
+	VaultService_GetData_FullMethodName      = "/VaultService/GetData"
+	VaultService_DeleteData_FullMethodName   = "/VaultService/DeleteData"
+	VaultService_UpdateData_FullMethodName   = "/VaultService/UpdateData"
+	VaultService_GetAllByType_FullMethodName = "/VaultService/GetAllByType"
+	VaultService_Test_FullMethodName         = "/VaultService/Test"
 )
 
 // VaultServiceClient is the client API for VaultService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VaultServiceClient interface {
+	AddData(ctx context.Context, in *AddDataReq, opts ...grpc.CallOption) (*AddDataRes, error)
+	GetData(ctx context.Context, in *GetDataReq, opts ...grpc.CallOption) (*GetDataRes, error)
+	DeleteData(ctx context.Context, in *DeleteDataReq, opts ...grpc.CallOption) (*DeleteDataRes, error)
+	UpdateData(ctx context.Context, in *UpdateDataReq, opts ...grpc.CallOption) (*UpdateDataRes, error)
+	GetAllByType(ctx context.Context, in *GetAllByTypeReq, opts ...grpc.CallOption) (*GetAllByTypeRes, error)
 	Test(ctx context.Context, in *TestReq, opts ...grpc.CallOption) (*TestRes, error)
 }
 
@@ -35,6 +45,56 @@ type vaultServiceClient struct {
 
 func NewVaultServiceClient(cc grpc.ClientConnInterface) VaultServiceClient {
 	return &vaultServiceClient{cc}
+}
+
+func (c *vaultServiceClient) AddData(ctx context.Context, in *AddDataReq, opts ...grpc.CallOption) (*AddDataRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AddDataRes)
+	err := c.cc.Invoke(ctx, VaultService_AddData_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vaultServiceClient) GetData(ctx context.Context, in *GetDataReq, opts ...grpc.CallOption) (*GetDataRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDataRes)
+	err := c.cc.Invoke(ctx, VaultService_GetData_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vaultServiceClient) DeleteData(ctx context.Context, in *DeleteDataReq, opts ...grpc.CallOption) (*DeleteDataRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteDataRes)
+	err := c.cc.Invoke(ctx, VaultService_DeleteData_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vaultServiceClient) UpdateData(ctx context.Context, in *UpdateDataReq, opts ...grpc.CallOption) (*UpdateDataRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateDataRes)
+	err := c.cc.Invoke(ctx, VaultService_UpdateData_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *vaultServiceClient) GetAllByType(ctx context.Context, in *GetAllByTypeReq, opts ...grpc.CallOption) (*GetAllByTypeRes, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAllByTypeRes)
+	err := c.cc.Invoke(ctx, VaultService_GetAllByType_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *vaultServiceClient) Test(ctx context.Context, in *TestReq, opts ...grpc.CallOption) (*TestRes, error) {
@@ -51,6 +111,11 @@ func (c *vaultServiceClient) Test(ctx context.Context, in *TestReq, opts ...grpc
 // All implementations must embed UnimplementedVaultServiceServer
 // for forward compatibility.
 type VaultServiceServer interface {
+	AddData(context.Context, *AddDataReq) (*AddDataRes, error)
+	GetData(context.Context, *GetDataReq) (*GetDataRes, error)
+	DeleteData(context.Context, *DeleteDataReq) (*DeleteDataRes, error)
+	UpdateData(context.Context, *UpdateDataReq) (*UpdateDataRes, error)
+	GetAllByType(context.Context, *GetAllByTypeReq) (*GetAllByTypeRes, error)
 	Test(context.Context, *TestReq) (*TestRes, error)
 	mustEmbedUnimplementedVaultServiceServer()
 }
@@ -62,6 +127,21 @@ type VaultServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedVaultServiceServer struct{}
 
+func (UnimplementedVaultServiceServer) AddData(context.Context, *AddDataReq) (*AddDataRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddData not implemented")
+}
+func (UnimplementedVaultServiceServer) GetData(context.Context, *GetDataReq) (*GetDataRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetData not implemented")
+}
+func (UnimplementedVaultServiceServer) DeleteData(context.Context, *DeleteDataReq) (*DeleteDataRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteData not implemented")
+}
+func (UnimplementedVaultServiceServer) UpdateData(context.Context, *UpdateDataReq) (*UpdateDataRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateData not implemented")
+}
+func (UnimplementedVaultServiceServer) GetAllByType(context.Context, *GetAllByTypeReq) (*GetAllByTypeRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllByType not implemented")
+}
 func (UnimplementedVaultServiceServer) Test(context.Context, *TestReq) (*TestRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Test not implemented")
 }
@@ -84,6 +164,96 @@ func RegisterVaultServiceServer(s grpc.ServiceRegistrar, srv VaultServiceServer)
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&VaultService_ServiceDesc, srv)
+}
+
+func _VaultService_AddData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddDataReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VaultServiceServer).AddData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VaultService_AddData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VaultServiceServer).AddData(ctx, req.(*AddDataReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VaultService_GetData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetDataReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VaultServiceServer).GetData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VaultService_GetData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VaultServiceServer).GetData(ctx, req.(*GetDataReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VaultService_DeleteData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDataReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VaultServiceServer).DeleteData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VaultService_DeleteData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VaultServiceServer).DeleteData(ctx, req.(*DeleteDataReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VaultService_UpdateData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDataReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VaultServiceServer).UpdateData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VaultService_UpdateData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VaultServiceServer).UpdateData(ctx, req.(*UpdateDataReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _VaultService_GetAllByType_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllByTypeReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VaultServiceServer).GetAllByType(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: VaultService_GetAllByType_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VaultServiceServer).GetAllByType(ctx, req.(*GetAllByTypeReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _VaultService_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -111,6 +281,26 @@ var VaultService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "VaultService",
 	HandlerType: (*VaultServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "AddData",
+			Handler:    _VaultService_AddData_Handler,
+		},
+		{
+			MethodName: "GetData",
+			Handler:    _VaultService_GetData_Handler,
+		},
+		{
+			MethodName: "DeleteData",
+			Handler:    _VaultService_DeleteData_Handler,
+		},
+		{
+			MethodName: "UpdateData",
+			Handler:    _VaultService_UpdateData_Handler,
+		},
+		{
+			MethodName: "GetAllByType",
+			Handler:    _VaultService_GetAllByType_Handler,
+		},
 		{
 			MethodName: "Test",
 			Handler:    _VaultService_Test_Handler,

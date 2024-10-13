@@ -5,6 +5,55 @@ option go_package = "github.com/pinbrain/gophkeeper/internal/proto";
 message TestReq{}
 message TestRes{}
 
+message Item {
+  bytes data = 1;
+  string type = 2;
+  string meta = 3;
+}
+
+message AddDataReq {
+  Item item = 1;
+}
+
+message AddDataRes {}
+
+message GetDataReq {
+  string id = 1;
+}
+message GetDataRes {
+  string id = 1;
+  Item item = 2;
+}
+
+message DeleteDataReq {
+  string id = 1;
+}
+message DeleteDataRes {}
+
+message UpdateDataReq {
+  string id = 1;
+  bytes data = 2;
+  string meta = 3;
+}
+message UpdateDataRes {}
+
+message GetAllByTypeReq {
+  string type = 1;
+}
+message GetAllByTypeRes {
+  message TypeItem {
+    string id = 1;
+    string meta = 2;
+  }
+  repeated TypeItem items = 1;
+}
+
 service VaultService {
+  rpc AddData(AddDataReq) returns(AddDataRes);
+  rpc GetData(GetDataReq) returns(GetDataRes);
+  rpc DeleteData(DeleteDataReq) returns(DeleteDataRes);
+  rpc UpdateData(UpdateDataReq) returns(UpdateDataRes);
+  rpc GetAllByType(GetAllByTypeReq) returns(GetAllByTypeRes);
+
   rpc Test(TestReq) returns(TestRes);
 }

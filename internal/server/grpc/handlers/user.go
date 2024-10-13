@@ -2,56 +2,79 @@ package handlers
 
 import (
 	"context"
+	"encoding/hex"
 	"errors"
 
-	"github.com/pinbrain/gophkeeper/internal/logger"
 	"github.com/pinbrain/gophkeeper/internal/model"
 	pb "github.com/pinbrain/gophkeeper/internal/proto"
+	"github.com/pinbrain/gophkeeper/internal/server/jwt"
+	"github.com/pinbrain/gophkeeper/internal/server/utils"
 	"github.com/pinbrain/gophkeeper/internal/storage"
 	"github.com/pinbrain/gophkeeper/internal/storage/postgres"
-	"github.com/pinbrain/gophkeeper/internal/utils"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type GRPCUserHandler struct {
 	pb.UnimplementedUserServiceServer
-	storage storage.Storage
+	masterKey  string
+	storage    storage.Storage
+	jwtService *jwt.Service
+	log        *logrus.Entry
 }
 
-func NewGRPCUserHandler(storage storage.Storage) *GRPCUserHandler {
+func NewGRPCUserHandler(
+	masterKey string, storage storage.Storage, jwtService *jwt.Service, log *logrus.Entry,
+) *GRPCUserHandler {
 	return &GRPCUserHandler{
-		storage: storage,
+		masterKey:  masterKey,
+		storage:    storage,
+		jwtService: jwtService,
+		log:        log,
 	}
 }
 
 func (h *GRPCUserHandler) Register(ctx context.Context, in *pb.RegisterReq) (*pb.RegisterRes, error) {
-	if in.GetEmail() == "" || in.GetLogin() == "" || in.GetPassword() == "" {
+	if in.GetLogin() == "" || in.GetPassword() == "" {
 		return nil, status.Error(codes.InvalidArgument, "Некорректные входные данные")
 	}
 	passwordHash, err := utils.GeneratePasswordHash(in.GetPassword())
 	if err != nil {
+		h.log.WithError(err).Error("Error while creating new user")
 		return nil, status.Error(codes.Internal, "Internal server error")
 	}
+
+	secretKey, err := utils.GenerateUserKey()
+	if err != nil {
+		h.log.WithError(err).Error("Error while creating new user")
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+	encSecretKey, err := utils.Encrypt(secretKey, h.masterKey)
+	if err != nil {
+		h.log.WithError(err).Error("Error while creating new user")
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+
 	user := &model.User{
-		Login:        in.GetLogin(),
-		Email:        in.GetEmail(),
-		PasswordHash: passwordHash,
+		Login:           in.GetLogin(),
+		PasswordHash:    passwordHash,
+		EncryptedSecret: hex.EncodeToString(encSecretKey),
 	}
 	_, err = h.storage.CreateUser(ctx, user)
 	if err != nil {
 		switch {
 		case errors.Is(err, postgres.ErrLoginTaken):
-			return nil, status.Error(codes.AlreadyExists, "Пользователь с таким логином или email уже существует")
+			return nil, status.Error(codes.AlreadyExists, "Пользователь с таким логином уже существует")
 		default:
-			logger.Log.WithError(err).Error("Error while creating new user")
+			h.log.WithError(err).Error("Error while creating new user")
 			return nil, status.Error(codes.Internal, "Не удалось создать пользователя")
 		}
 	}
 
-	jwt, err := utils.BuildJWTSting(user)
+	jwt, err := h.jwtService.BuildJWTSting(user)
 	if err != nil {
-		logger.Log.WithError(err).Error("Error while creating new user")
+		h.log.WithError(err).Error("Error while creating new user")
 		return nil, status.Error(codes.Internal, "Internal server error")
 	}
 	response := &pb.RegisterRes{
@@ -70,16 +93,16 @@ func (h *GRPCUserHandler) Login(ctx context.Context, in *pb.LoginReq) (*pb.Login
 		case errors.Is(err, postgres.ErrNoUser):
 			return nil, status.Error(codes.NotFound, "Пользователь с таким логином не найден")
 		default:
-			logger.Log.WithError(err).Error("Error while login user")
+			h.log.WithError(err).Error("Error while login user")
 			return nil, status.Error(codes.Internal, "Internal server error")
 		}
 	}
 	if isPwdOk := utils.ComparePwdAndHash(in.GetPassword(), user.PasswordHash); !isPwdOk {
 		return nil, status.Error(codes.Unauthenticated, "Неверные логин/пароль")
 	}
-	jwt, err := utils.BuildJWTSting(user)
+	jwt, err := h.jwtService.BuildJWTSting(user)
 	if err != nil {
-		logger.Log.WithError(err).Error("Error while login user")
+		h.log.WithError(err).Error("Error while login user")
 		return nil, status.Error(codes.Internal, "Internal server error")
 	}
 	response := &pb.LoginRes{

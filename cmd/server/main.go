@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pinbrain/gophkeeper/internal/logger"
 	"github.com/pinbrain/gophkeeper/internal/server"
 	"github.com/pinbrain/gophkeeper/internal/server/config"
@@ -8,23 +9,23 @@ import (
 )
 
 func main() {
-	cfg := config.ServerConfig{
-		ServerAddress: ":8080",
-		LogLevel:      "debug",
-		DSN:           "postgresql://keeper:keeper@192.168.0.27:5412/keeper",
-	}
-
-	if err := logger.Initialize(cfg.LogLevel); err != nil {
-		panic(err)
-	}
-
-	server, err := server.NewServer(cfg)
+	cfg, err := config.InitConfig()
 	if err != nil {
 		panic(err)
 	}
-	logger.Log.WithFields(logrus.Fields{
-		"addr":     cfg.ServerAddress,
-		"logLevel": cfg.LogLevel,
+
+	logger, err := logger.NewLogger(cfg.LogLevel)
+	if err != nil {
+		panic(err)
+	}
+
+	server, err := server.NewServer(cfg, logger)
+	if err != nil {
+		panic(err)
+	}
+	logger.WithFields(logrus.Fields{
+		"address":  cfg.ServerAddress,
+		"logLevel": logger.Level.String(),
 	}).Info("Starting server")
 	if err = server.Run(); err != nil {
 		panic(err)

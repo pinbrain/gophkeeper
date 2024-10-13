@@ -5,26 +5,27 @@ import (
 	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/pinbrain/gophkeeper/internal/logger"
 	"github.com/pinbrain/gophkeeper/internal/storage"
 	"github.com/pinbrain/gophkeeper/internal/storage/postgres/migrations"
 	"github.com/pressly/goose/v3"
+	"github.com/sirupsen/logrus"
 )
 
 type PGStorage struct {
 	pool *pgxpool.Pool
+	log  *logrus.Entry
 }
 
-func NewStorage(ctx context.Context, dsn string) (storage.Storage, error) {
-	if err := runMigrations(dsn); err != nil {
+func NewStorage(ctx context.Context, dsn string, logger *logrus.Logger) (storage.Storage, error) {
+	log := logger.WithField("instance", "pgStorage")
+	if err := runMigrations(dsn, log); err != nil {
 		return nil, fmt.Errorf("failed to run db migration: %w", err)
 	}
 	pool, err := initPool(ctx, dsn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialized a db connection: %w", err)
 	}
-	return &PGStorage{pool: pool}, nil
+	return &PGStorage{pool: pool, log: log}, nil
 }
 
 func (pg *PGStorage) Close() error {
@@ -47,16 +48,16 @@ func initPool(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 	return pool, nil
 }
 
-func runMigrations(dsn string) error {
+func runMigrations(dsn string, logger *logrus.Entry) error {
 	goose.SetBaseFS(migrations.FS)
-	goose.SetLogger(logger.Log)
+	goose.SetLogger(logger)
 	if err := goose.SetDialect("postgres"); err != nil {
 		return err
 	}
 	sqlDB, err := goose.OpenDBWithDriver("postgres", dsn)
 	defer func() {
 		if err = sqlDB.Close(); err != nil {
-			logger.Log.WithField("err", err).Error("failed to close db connection while migration")
+			logger.WithField("err", err).Error("failed to close db connection while migration")
 		}
 	}()
 	if err != nil {

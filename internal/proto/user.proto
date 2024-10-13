@@ -3,7 +3,6 @@ syntax = "proto3";
 option go_package = "github.com/pinbrain/gophkeeper/internal/proto";
 
 message RegisterReq {
-  string email = 1;
   string login = 2;
   string password = 3;
 }
