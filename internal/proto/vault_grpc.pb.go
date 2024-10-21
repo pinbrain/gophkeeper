@@ -24,7 +24,6 @@ const (
 	VaultService_DeleteData_FullMethodName   = "/VaultService/DeleteData"
 	VaultService_UpdateData_FullMethodName   = "/VaultService/UpdateData"
 	VaultService_GetAllByType_FullMethodName = "/VaultService/GetAllByType"
-	VaultService_Test_FullMethodName         = "/VaultService/Test"
 )
 
 // VaultServiceClient is the client API for VaultService service.
@@ -36,7 +35,6 @@ type VaultServiceClient interface {
 	DeleteData(ctx context.Context, in *DeleteDataReq, opts ...grpc.CallOption) (*DeleteDataRes, error)
 	UpdateData(ctx context.Context, in *UpdateDataReq, opts ...grpc.CallOption) (*UpdateDataRes, error)
 	GetAllByType(ctx context.Context, in *GetAllByTypeReq, opts ...grpc.CallOption) (*GetAllByTypeRes, error)
-	Test(ctx context.Context, in *TestReq, opts ...grpc.CallOption) (*TestRes, error)
 }
 
 type vaultServiceClient struct {
@@ -97,16 +95,6 @@ func (c *vaultServiceClient) GetAllByType(ctx context.Context, in *GetAllByTypeR
 	return out, nil
 }
 
-func (c *vaultServiceClient) Test(ctx context.Context, in *TestReq, opts ...grpc.CallOption) (*TestRes, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(TestRes)
-	err := c.cc.Invoke(ctx, VaultService_Test_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // VaultServiceServer is the server API for VaultService service.
 // All implementations must embed UnimplementedVaultServiceServer
 // for forward compatibility.
@@ -116,7 +104,6 @@ type VaultServiceServer interface {
 	DeleteData(context.Context, *DeleteDataReq) (*DeleteDataRes, error)
 	UpdateData(context.Context, *UpdateDataReq) (*UpdateDataRes, error)
 	GetAllByType(context.Context, *GetAllByTypeReq) (*GetAllByTypeRes, error)
-	Test(context.Context, *TestReq) (*TestRes, error)
 	mustEmbedUnimplementedVaultServiceServer()
 }
 
@@ -141,9 +128,6 @@ func (UnimplementedVaultServiceServer) UpdateData(context.Context, *UpdateDataRe
 }
 func (UnimplementedVaultServiceServer) GetAllByType(context.Context, *GetAllByTypeReq) (*GetAllByTypeRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllByType not implemented")
-}
-func (UnimplementedVaultServiceServer) Test(context.Context, *TestReq) (*TestRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Test not implemented")
 }
 func (UnimplementedVaultServiceServer) mustEmbedUnimplementedVaultServiceServer() {}
 func (UnimplementedVaultServiceServer) testEmbeddedByValue()                      {}
@@ -256,24 +240,6 @@ func _VaultService_GetAllByType_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
-func _VaultService_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(TestReq)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(VaultServiceServer).Test(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: VaultService_Test_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VaultServiceServer).Test(ctx, req.(*TestReq))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // VaultService_ServiceDesc is the grpc.ServiceDesc for VaultService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -300,10 +266,6 @@ var VaultService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAllByType",
 			Handler:    _VaultService_GetAllByType_Handler,
-		},
-		{
-			MethodName: "Test",
-			Handler:    _VaultService_Test_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

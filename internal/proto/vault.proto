@@ -2,9 +2,6 @@ syntax = "proto3";
 
 option go_package = "github.com/pinbrain/gophkeeper/internal/proto";
 
-message TestReq{}
-message TestRes{}
-
 message Item {
   bytes data = 1;
   string type = 2;
@@ -54,6 +51,4 @@ service VaultService {
   rpc DeleteData(DeleteDataReq) returns(DeleteDataRes);
   rpc UpdateData(UpdateDataReq) returns(UpdateDataRes);
   rpc GetAllByType(GetAllByTypeReq) returns(GetAllByTypeRes);
-
-  rpc Test(TestReq) returns(TestRes);
 }

@@ -50,3 +50,31 @@ type BankCardData struct {
 	Holder     string `json:"holder"`
 	CSV        string `json:"csv"`
 }
+
+type PasswordItem struct {
+	Type DataType
+	Meta PasswordMeta
+	Data string
+}
+
+type TextItem struct {
+	Type DataType
+	Meta TextMeta
+	Data string
+}
+
+type BankCardItem struct {
+	Type DataType
+	Meta BankCardMeta
+	Data BankCardData
+}
+
+type FileItem struct {
+	Type DataType
+	Meta FileMeta
+}
+
+type ItemInfo struct {
+	ID   string
+	Meta any
+}

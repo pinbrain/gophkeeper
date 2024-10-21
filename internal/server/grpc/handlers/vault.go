@@ -100,6 +100,89 @@ func (h *GRPCVaultHandler) GetData(ctx context.Context, in *pb.GetDataReq) (*pb.
 	return response, nil
 }
 
+func (h *GRPCVaultHandler) DeleteData(ctx context.Context, in *pb.DeleteDataReq) (*pb.DeleteDataRes, error) {
+	if in.GetId() == "" {
+		return nil, status.Error(codes.InvalidArgument, "Отсутствует id данных")
+	}
+	user := appCtx.GetCtxUser(ctx)
+	if user == nil {
+		h.log.Error("failed to get user from context")
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+	err := h.storage.DeleteItem(ctx, in.GetId(), user.ID)
+	if err != nil {
+		switch {
+		case errors.Is(err, postgres.ErrNoData):
+			return nil, status.Error(codes.NotFound, "Данные для удаления не найдены")
+		default:
+			h.log.WithError(err).Error("Error while deleting item")
+			return nil, status.Error(codes.Internal, "Internal server error")
+		}
+	}
+	return &pb.DeleteDataRes{}, nil
+}
+
+func (h *GRPCVaultHandler) GetAllByType(ctx context.Context, in *pb.GetAllByTypeReq) (*pb.GetAllByTypeRes, error) {
+	dataType := in.GetType()
+	if !isValidDataType(dataType) {
+		return nil, status.Error(codes.InvalidArgument, "Неизвестный тип данных")
+	}
+	user := appCtx.GetCtxUser(ctx)
+	if user == nil {
+		h.log.Error("failed to get user from context")
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+	items, err := h.storage.GetItemsByType(ctx, dataType, user.ID)
+	if err != nil {
+		h.log.WithError(err).Error("Error while deleting item")
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+	var responseItems []*pb.GetAllByTypeRes_TypeItem
+	for _, item := range items {
+		responseItems = append(responseItems, &pb.GetAllByTypeRes_TypeItem{
+			Id:   item.ID,
+			Meta: item.Meta,
+		})
+	}
+	return &pb.GetAllByTypeRes{
+		Items: responseItems,
+	}, nil
+}
+
+func (h *GRPCVaultHandler) UpdateData(ctx context.Context, in *pb.UpdateDataReq) (*pb.UpdateDataRes, error) {
+	if in.GetId() == "" {
+		return nil, status.Error(codes.InvalidArgument, "Отсутствует id данных")
+	}
+	user := appCtx.GetCtxUser(ctx)
+	if user == nil {
+		h.log.Error("failed to get user from context")
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+	encData, err := utils.Encrypt(in.GetData(), user.Secret)
+	if err != nil {
+		h.log.WithError(err).Error("Error while encrypting user data")
+		return nil, status.Error(codes.Internal, "Internal server error")
+	}
+
+	item := &model.VaultItem{
+		ID:          in.GetId(),
+		UserID:      user.ID,
+		Meta:        in.GetMeta(),
+		EncryptData: encData,
+	}
+	err = h.storage.UpdateItem(ctx, in.GetId(), user.ID, item)
+	if err != nil {
+		switch {
+		case errors.Is(err, postgres.ErrNoData):
+			return nil, status.Error(codes.NotFound, "Данные для обновления не найдены")
+		default:
+			h.log.WithError(err).Error("Error while updating item")
+			return nil, status.Error(codes.Internal, "Internal server error")
+		}
+	}
+	return &pb.UpdateDataRes{}, nil
+}
+
 func isValidDataType(dataType string) bool {
 	switch model.DataType(dataType) {
 	case model.Password, model.Text, model.BankCard, model.File:

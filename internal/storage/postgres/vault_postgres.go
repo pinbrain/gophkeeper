@@ -55,3 +55,42 @@ func (pg *PGStorage) DeleteItem(ctx context.Context, id string, userID string) e
 	}
 	return nil
 }
+
+func (pg *PGStorage) GetItemsByType(ctx context.Context, dataType string, userID string) ([]model.VaultItem, error) {
+	var items []model.VaultItem
+	rows, err := pg.pool.Query(ctx,
+		`SELECT id, meta, created_at, updated_at FROM user_data WHERE user_id = $1 AND data_type = $2;`,
+		userID, dataType,
+	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get items by type: %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item model.VaultItem
+		if err = rows.Scan(&item.ID, &item.Meta, &item.CreatedAt, &item.UpdatedAt); err != nil {
+			return nil, fmt.Errorf("failed to read data from db - item row: %w", err)
+		}
+		item.UserID = userID
+		items = append(items, item)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("failed to get items by type: %w", err)
+	}
+	return items, nil
+}
+
+func (pg *PGStorage) UpdateItem(ctx context.Context, id string, userID string, item *model.VaultItem) error {
+	res, err := pg.pool.Exec(ctx,
+		`UPDATE user_data SET encrypt_data = $1, meta = $2, updated_at = NOW() WHERE id = $3 AND user_id = $4;`,
+		item.EncryptData, item.Meta, id, userID,
+	)
+	if err != nil {
+		return fmt.Errorf("failed to update item: %w", err)
+	}
+	if res.RowsAffected() == 0 {
+		return ErrNoData
+	}
+	return nil
+}
