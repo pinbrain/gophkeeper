@@ -30,10 +30,14 @@ func NewServer(cfg *config.ServerConfig, logger *logrus.Logger) (*Server, error)
 
 	jwtService := jwt.NewJWTService(cfg.JWT)
 
-	transport := grpc.NewGRPCTransport(grpc.TransportConfig{
+	transport, err := grpc.NewGRPCTransport(grpc.TransportConfig{
 		MasterKey:     cfg.MasterKey,
 		ServerAddress: cfg.ServerAddress,
 	}, storage, jwtService, logger)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create grpc transport: %w", err)
+	}
+
 	return &Server{
 		storage:   storage,
 		transport: transport,

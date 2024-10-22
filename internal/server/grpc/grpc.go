@@ -11,6 +11,7 @@ import (
 	"github.com/pinbrain/gophkeeper/internal/storage"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/reflection"
 )
 
@@ -32,10 +33,16 @@ type TransportConfig struct {
 
 func NewGRPCTransport(
 	cfg TransportConfig, storage storage.Storage, jwtService *jwt.Service, logger *logrus.Logger,
-) *Transport {
+) (*Transport, error) {
+	tlsCredentials, err := credentials.NewServerTLSFromFile("cert/server-cert.pem", "cert/server-key.pem")
+	if err != nil {
+		return nil, err
+	}
+
 	log := logger.WithField("instance", "grpcTransport")
 	authInterceptor := interceptors.NewAuthInterceptor(cfg.MasterKey, storage, jwtService, log)
 	s := grpc.NewServer(
+		grpc.Creds(tlsCredentials),
 		grpc.ChainUnaryInterceptor(
 			interceptors.LoggerInterceptor(log),
 			authInterceptor.AuthenticateUser,
@@ -55,7 +62,7 @@ func NewGRPCTransport(
 	pb.RegisterUserServiceServer(grpcTransport.grpcServer, grpcTransport.userHandler)
 	pb.RegisterVaultServiceServer(grpcTransport.grpcServer, grpcTransport.vaultHandler)
 	reflection.Register(grpcTransport.grpcServer)
-	return grpcTransport
+	return grpcTransport, nil
 }
 
 func (s *Transport) Run() error {

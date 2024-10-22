@@ -36,7 +36,6 @@
  - Удалить данные (по id)
  ```sh
  gophkeeper vault delete --id 00c15ce5-b86d-47ce-8298-710d875acbfd
- ```vault get --id 00c15ce5-b86d-47ce-8298-710d875acbfd
  ```
 
  - Добавить пароль

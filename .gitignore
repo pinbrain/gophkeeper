@@ -27,3 +27,4 @@ config.json
 clientConfig.json
 serverConfig.json
 test.go
+cert
