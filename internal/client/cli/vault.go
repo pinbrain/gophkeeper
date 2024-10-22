@@ -13,8 +13,8 @@ func (c *CLI) GetDataCmd(ctx context.Context) *cobra.Command {
 	var id string
 	cmd := &cobra.Command{
 		Use:   "get",
-		Short: "Get data from vault",
-		Long:  "Get data from vault by it id",
+		Short: "Загрузка данных из хранилища",
+		Long:  "Загрузить данные из хранилища по id",
 		RunE: func(_ *cobra.Command, _ []string) error {
 			dataType, res, err := c.service.GetData(ctx, id)
 			if err != nil {
@@ -86,8 +86,8 @@ func (c *CLI) GetAllByTypeCmd(ctx context.Context) *cobra.Command {
 	var dataType string
 	cmd := &cobra.Command{
 		Use:   "getall",
-		Short: "Get list of items",
-		Long:  "Get list of saved files by type",
+		Short: "Получить список данных",
+		Long:  "Получить список хранящихся данных определенного типа",
 		RunE: func(_ *cobra.Command, _ []string) error {
 			res, err := c.service.GetAllByType(ctx, model.DataType(dataType))
 			if err != nil {
