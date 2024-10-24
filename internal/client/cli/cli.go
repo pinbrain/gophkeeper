@@ -48,13 +48,13 @@ func NewCLI(ctx context.Context, service Service) *CLI {
 		},
 		userCMD: &cobra.Command{
 			Use:   "user",
-			Short: "auth commands",
-			Long:  "Create new user, or login with existing one",
+			Short: "Команды аутентификации",
+			Long:  "Команды создания нового пользователя, аутентификации по логину и паролю",
 		},
 		vaultCMD: &cobra.Command{
 			Use:   "vault",
-			Short: "Work with data",
-			Long:  "Work with data - save, get, delete and update",
+			Short: "Команды для работы с хранилищем",
+			Long:  "Команды для работы с хранилищем - добавление, удаление, загрузка данных",
 		},
 	}
 
