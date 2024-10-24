@@ -1,3 +1,4 @@
+// Package config формирует конфигурацию сервера.
 package config
 
 import (
@@ -6,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// ServerConfig определяет структуру конфигурации сервера.
 type ServerConfig struct {
 	MasterKey     string    // Мастер ключ для шифрования.
 	ServerAddress string    // Адрес gRPC сервера.
@@ -14,15 +16,17 @@ type ServerConfig struct {
 	JWT           JWTConfig // JWT конфигурация.
 }
 
+// JWTConfig определяет структуру конфигурации jwt.
 type JWTConfig struct {
 	LifeTime  int    // Время жизни токена в минутах.
 	SecretKey string // Ключ для подписи jwt токена.
 	MetaKey   string // Название ключа в мета gRPC запроса.
 }
 
+// InitConfig формирует итоговую конфигурацию сервера.
 func InitConfig() (*ServerConfig, error) {
 	// Файл с конфигурацией
-	viper.SetConfigFile("config.json")
+	viper.SetConfigFile("serverConfig.json")
 	viper.SetConfigType("json")
 	viper.AddConfigPath(".")
 

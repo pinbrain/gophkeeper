@@ -14,6 +14,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// TokenInterceptor проставляет в метаданные для каждого исходящего grpc запроса jwt.
 func TokenInterceptor() grpc.UnaryClientInterceptor {
 	return func(
 		ctx context.Context,

@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// RegisterCmd возвращает команду cobra для регистрации пользователя.
 func (c *CLI) RegisterCmd(ctx context.Context) *cobra.Command {
 	var login, password string
 	cmd := &cobra.Command{
@@ -29,6 +30,7 @@ func (c *CLI) RegisterCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// LoginCmd возвращает команду cobra для регистрации аутентификации пользователя.
 func (c *CLI) LoginCmd(ctx context.Context) *cobra.Command {
 	var login, password string
 	cmd := &cobra.Command{

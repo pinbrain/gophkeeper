@@ -1,3 +1,4 @@
+// Package grpc содержит реализацию grpc клиента.
 package grpc
 
 import (
@@ -8,11 +9,13 @@ import (
 	"google.golang.org/grpc/credentials"
 )
 
+// Client определяет структуру клиента.
 type Client struct {
 	UserClient  pb.UserServiceClient
 	VaultClient pb.VaultServiceClient
 }
 
+// NewGRPCConnection создает и возвращает новый grpc клиент.
 func NewGRPCConnection(cfg *config.ClientConfig) (*Client, error) {
 	creds, err := credentials.NewClientTLSFromFile("cert/server-cert.pem", "")
 	if err != nil {

@@ -11,11 +11,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// PGStorage описывает структуру хранилища БД.
 type PGStorage struct {
 	pool *pgxpool.Pool
 	log  *logrus.Entry
 }
 
+// NewStorage создает и возвращает новое хранилище.
 func NewStorage(ctx context.Context, dsn string, logger *logrus.Logger) (storage.Storage, error) {
 	log := logger.WithField("instance", "pgStorage")
 	if err := runMigrations(dsn, log); err != nil {
@@ -28,11 +30,13 @@ func NewStorage(ctx context.Context, dsn string, logger *logrus.Logger) (storage
 	return &PGStorage{pool: pool, log: log}, nil
 }
 
+// Close закрывает пулл и все соединения с БД.
 func (pg *PGStorage) Close() error {
 	pg.pool.Close()
 	return nil
 }
 
+// initPool инициализация пула для соединения с БД.
 func initPool(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 	poolCfg, err := pgxpool.ParseConfig(dsn)
 	if err != nil {
@@ -48,6 +52,7 @@ func initPool(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 	return pool, nil
 }
 
+// runMigrations запускает миграции БД.
 func runMigrations(dsn string, logger *logrus.Entry) error {
 	goose.SetBaseFS(migrations.FS)
 	goose.SetLogger(logger)

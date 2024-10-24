@@ -1,3 +1,4 @@
+// Package client инициализирует запуск клиента для работы с хранилищем.
 package client
 
 import (
@@ -9,10 +10,12 @@ import (
 	"github.com/pinbrain/gophkeeper/internal/client/service"
 )
 
+// Client описывает структуру клиента.
 type Client struct {
 	cli *cli.CLI
 }
 
+// NewClient создает и возвращает новый клиент.
 func NewClient(cfg *config.ClientConfig) (*Client, error) {
 	ctx := context.Background()
 	grpcClient, err := grpc.NewGRPCConnection(cfg)
@@ -26,6 +29,7 @@ func NewClient(cfg *config.ClientConfig) (*Client, error) {
 	}, nil
 }
 
+// Execute запускает обработку команды.
 func (c *Client) Execute() error {
 	return c.cli.Execute()
 }

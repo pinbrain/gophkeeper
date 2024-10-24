@@ -9,10 +9,12 @@ import (
 	"github.com/pinbrain/gophkeeper/internal/model"
 )
 
+// Ошибки, возвращаемые хранилищем.
 var (
 	ErrNoData = errors.New("data not found in db")
 )
 
+// CreateItem сохраняет новые данные.
 func (pg *PGStorage) CreateItem(ctx context.Context, userID string, item *model.VaultItem) (string, error) {
 	row := pg.pool.QueryRow(
 		ctx,
@@ -25,6 +27,7 @@ func (pg *PGStorage) CreateItem(ctx context.Context, userID string, item *model.
 	return item.ID, nil
 }
 
+// GetItem возвращает данные по id.
 func (pg *PGStorage) GetItem(ctx context.Context, id string, userID string) (*model.VaultItem, error) {
 	var item model.VaultItem
 	row := pg.pool.QueryRow(
@@ -45,6 +48,7 @@ func (pg *PGStorage) GetItem(ctx context.Context, id string, userID string) (*mo
 	return &item, nil
 }
 
+// DeleteItem удаляет данные.
 func (pg *PGStorage) DeleteItem(ctx context.Context, id string, userID string) error {
 	res, err := pg.pool.Exec(ctx, `DELETE FROM user_data WHERE id = $1 AND user_id = $2;`, id, userID)
 	if err != nil {
@@ -56,6 +60,7 @@ func (pg *PGStorage) DeleteItem(ctx context.Context, id string, userID string) e
 	return nil
 }
 
+// GetItemsByType возвращает данные пользователя по типу.
 func (pg *PGStorage) GetItemsByType(ctx context.Context, dataType string, userID string) ([]model.VaultItem, error) {
 	var items []model.VaultItem
 	rows, err := pg.pool.Query(ctx,
@@ -81,6 +86,7 @@ func (pg *PGStorage) GetItemsByType(ctx context.Context, dataType string, userID
 	return items, nil
 }
 
+// UpdateItem обновляет данные.
 func (pg *PGStorage) UpdateItem(ctx context.Context, id string, userID string, item *model.VaultItem) error {
 	res, err := pg.pool.Exec(ctx,
 		`UPDATE user_data SET encrypt_data = $1, meta = $2, updated_at = NOW() WHERE id = $3 AND user_id = $4;`,

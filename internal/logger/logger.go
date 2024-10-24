@@ -1,9 +1,11 @@
+// Package logger реализует настроенный логгер.
 package logger
 
 import (
 	"github.com/sirupsen/logrus"
 )
 
+// NewLogger создает и возвращает новый логгер.
 func NewLogger(level string) (*logrus.Logger, error) {
 	var err error
 	logLvl := logrus.InfoLevel
@@ -16,8 +18,5 @@ func NewLogger(level string) (*logrus.Logger, error) {
 	logger := logrus.New()
 	logger.SetLevel(logLvl)
 	logger.SetFormatter(&logrus.JSONFormatter{})
-	// if logLvl == logrus.DebugLevel {
-	// 	logger.SetReportCaller(true)
-	// }
 	return logger, nil
 }

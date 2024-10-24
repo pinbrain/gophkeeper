@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// GRPCVaultHandler определяет структуру обработчика grpc запросов в части работы с данными.
 type GRPCVaultHandler struct {
 	pb.UnimplementedVaultServiceServer
 	masterKey string
@@ -22,6 +23,7 @@ type GRPCVaultHandler struct {
 	log       *logrus.Entry
 }
 
+// NewGRPCVaultHandler создает и возвращает новый обработчик grpc запросов в части работы с данными.
 func NewGRPCVaultHandler(masterKey string, storage storage.Storage, log *logrus.Entry) *GRPCVaultHandler {
 	return &GRPCVaultHandler{
 		masterKey: masterKey,
@@ -30,6 +32,7 @@ func NewGRPCVaultHandler(masterKey string, storage storage.Storage, log *logrus.
 	}
 }
 
+// AddData добавляет новые данные в хранилище.
 func (h *GRPCVaultHandler) AddData(ctx context.Context, in *pb.AddDataReq) (*pb.AddDataRes, error) {
 	reqItem := in.GetItem()
 	if reqItem == nil {
@@ -65,6 +68,7 @@ func (h *GRPCVaultHandler) AddData(ctx context.Context, in *pb.AddDataReq) (*pb.
 	return &pb.AddDataRes{}, nil
 }
 
+// GetData возвращает данные из хранилища по id.
 func (h *GRPCVaultHandler) GetData(ctx context.Context, in *pb.GetDataReq) (*pb.GetDataRes, error) {
 	if in.GetId() == "" {
 		return nil, status.Error(codes.InvalidArgument, "Отсутствует id данных")
@@ -100,6 +104,7 @@ func (h *GRPCVaultHandler) GetData(ctx context.Context, in *pb.GetDataReq) (*pb.
 	return response, nil
 }
 
+// DeleteData удаляет данные из хранилища.
 func (h *GRPCVaultHandler) DeleteData(ctx context.Context, in *pb.DeleteDataReq) (*pb.DeleteDataRes, error) {
 	if in.GetId() == "" {
 		return nil, status.Error(codes.InvalidArgument, "Отсутствует id данных")
@@ -122,6 +127,7 @@ func (h *GRPCVaultHandler) DeleteData(ctx context.Context, in *pb.DeleteDataReq)
 	return &pb.DeleteDataRes{}, nil
 }
 
+// GetAllByType возвращает список данных в хранилище по типу.
 func (h *GRPCVaultHandler) GetAllByType(ctx context.Context, in *pb.GetAllByTypeReq) (*pb.GetAllByTypeRes, error) {
 	dataType := in.GetType()
 	if !isValidDataType(dataType) {
@@ -149,6 +155,7 @@ func (h *GRPCVaultHandler) GetAllByType(ctx context.Context, in *pb.GetAllByType
 	}, nil
 }
 
+// UpdateData обновляет данные в хранилище.
 func (h *GRPCVaultHandler) UpdateData(ctx context.Context, in *pb.UpdateDataReq) (*pb.UpdateDataRes, error) {
 	if in.GetId() == "" {
 		return nil, status.Error(codes.InvalidArgument, "Отсутствует id данных")
@@ -183,6 +190,7 @@ func (h *GRPCVaultHandler) UpdateData(ctx context.Context, in *pb.UpdateDataReq)
 	return &pb.UpdateDataRes{}, nil
 }
 
+// isValidDataType валидирует корректность типа данных.
 func isValidDataType(dataType string) bool {
 	switch model.DataType(dataType) {
 	case model.Password, model.Text, model.BankCard, model.File:

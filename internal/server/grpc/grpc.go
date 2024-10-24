@@ -1,3 +1,4 @@
+// Package grpc содержит реализацию gRPC сервера.
 package grpc
 
 import (
@@ -15,6 +16,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
+// Transport определяет структуру grpc сервера.
 type Transport struct {
 	addr       string
 	grpcServer *grpc.Server
@@ -26,11 +28,13 @@ type Transport struct {
 	log          *logrus.Entry
 }
 
+// TransportConfig определяет структуру конфигурации grpc сервера.
 type TransportConfig struct {
 	MasterKey     string
 	ServerAddress string
 }
 
+// NewGRPCTransport создает и возвращает новый grpc сервер.
 func NewGRPCTransport(
 	cfg TransportConfig, storage storage.Storage, jwtService *jwt.Service, logger *logrus.Logger,
 ) (*Transport, error) {
@@ -65,6 +69,7 @@ func NewGRPCTransport(
 	return grpcTransport, nil
 }
 
+// Run запускает grpc сервер.
 func (s *Transport) Run() error {
 	listen, err := net.Listen("tcp", s.addr)
 	fmt.Println("going to listen:", s.addr)
@@ -74,6 +79,7 @@ func (s *Transport) Run() error {
 	return s.grpcServer.Serve(listen)
 }
 
+// Stop останавливает grpc сервер.
 func (s *Transport) Stop() error {
 	s.grpcServer.GracefulStop()
 	return nil

@@ -1,3 +1,4 @@
+// Package server содержит реализацию сервера.
 package server
 
 import (
@@ -12,6 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// Server определяет структуру сервера.
 type Server struct {
 	storage   storage.Storage
 	transport *grpc.Transport
@@ -19,6 +21,7 @@ type Server struct {
 	log *logrus.Entry
 }
 
+// NewServer создает и возвращает новый сервер.
 func NewServer(cfg *config.ServerConfig, logger *logrus.Logger) (*Server, error) {
 	log := logger.WithField("instance", "server")
 
@@ -45,10 +48,12 @@ func NewServer(cfg *config.ServerConfig, logger *logrus.Logger) (*Server, error)
 	}, nil
 }
 
+// Run запускает сервер.
 func (s *Server) Run() error {
 	return s.transport.Run()
 }
 
+// Stop останавливает сервер.
 func (s *Server) Stop() error {
 	if err := s.transport.Stop(); err != nil {
 		s.log.Errorf("an error occurred during grpc server shutdown: %v", err)

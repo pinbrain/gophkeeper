@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// Register регистрирует нового пользователя.
 func (s *Service) Register(ctx context.Context, login, password string) (string, error) {
 	res, err := s.grpcClient.UserClient.Register(ctx, &proto.RegisterReq{
 		Login: login, Password: password,
@@ -26,6 +27,7 @@ func (s *Service) Register(ctx context.Context, login, password string) (string,
 	return res.GetToken(), nil
 }
 
+// Login аутентифицирует пользователя по логину и паролю.
 func (s *Service) Login(ctx context.Context, login, password string) (string, error) {
 	res, err := s.grpcClient.UserClient.Login(ctx, &proto.LoginReq{
 		Login: login, Password: password,

@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// addData реализует логику передачи объекта для сохранения на сервере.
 func (s *Service) addData(ctx context.Context, data []byte, meta string, dataType model.DataType) error {
 	_, err := s.grpcClient.VaultClient.AddData(ctx, &proto.AddDataReq{
 		Item: &proto.Item{
@@ -30,6 +31,7 @@ func (s *Service) addData(ctx context.Context, data []byte, meta string, dataTyp
 	return nil
 }
 
+// AddPassword сохраняет пароль в хранилище.
 func (s *Service) AddPassword(ctx context.Context, data string, meta model.PasswordMeta) error {
 	metaB, err := json.Marshal(meta)
 	if err != nil {
@@ -38,6 +40,7 @@ func (s *Service) AddPassword(ctx context.Context, data string, meta model.Passw
 	return s.addData(ctx, []byte(data), string(metaB), model.Password)
 }
 
+// AddText сохраняет произвольные текстовые данные в хранилище.
 func (s *Service) AddText(ctx context.Context, data string, meta model.TextMeta) error {
 	metaB, err := json.Marshal(meta)
 	if err != nil {
@@ -46,6 +49,7 @@ func (s *Service) AddText(ctx context.Context, data string, meta model.TextMeta)
 	return s.addData(ctx, []byte(data), string(metaB), model.Text)
 }
 
+// AddBankCard сохраняет данные банковской карты в хранилище.
 func (s *Service) AddBankCard(ctx context.Context, data model.BankCardData, meta model.BankCardMeta) error {
 	metaB, err := json.Marshal(meta)
 	if err != nil {
@@ -58,6 +62,7 @@ func (s *Service) AddBankCard(ctx context.Context, data model.BankCardData, meta
 	return s.addData(ctx, dataB, string(metaB), model.BankCard)
 }
 
+// AddFile сохраняет файл в хранилище.
 func (s *Service) AddFile(ctx context.Context, file string, comment string) error {
 	fileInfo, err := os.Stat(file)
 	if err != nil {
@@ -82,6 +87,7 @@ func (s *Service) AddFile(ctx context.Context, file string, comment string) erro
 	return s.addData(ctx, data, string(metaB), model.File)
 }
 
+// GetData загружает данные из хранилища.
 func (s *Service) GetData(ctx context.Context, id string) (model.DataType, any, error) {
 	res, err := s.grpcClient.VaultClient.GetData(ctx, &proto.GetDataReq{
 		Id: id,
@@ -166,6 +172,7 @@ func (s *Service) GetData(ctx context.Context, id string) (model.DataType, any, 
 	return "", nil, fmt.Errorf("неизвестный тип данных: %s", itemType)
 }
 
+// GetAllByType получает список данных из хранилища по типу.
 func (s *Service) GetAllByType(ctx context.Context, dataType model.DataType) ([]model.ItemInfo, error) {
 	res, err := s.grpcClient.VaultClient.GetAllByType(ctx, &proto.GetAllByTypeReq{
 		Type: string(dataType),
@@ -206,6 +213,7 @@ func (s *Service) GetAllByType(ctx context.Context, dataType model.DataType) ([]
 	return result, nil
 }
 
+// DeleteData удаляет данные из хранилища.
 func (s *Service) DeleteData(ctx context.Context, id string) error {
 	_, err := s.grpcClient.VaultClient.DeleteData(ctx, &proto.DeleteDataReq{
 		Id: id,

@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// GetDataCmd возвращает команду cobra для получения данных из хранилища.
 func (c *CLI) GetDataCmd(ctx context.Context) *cobra.Command {
 	var id string
 	cmd := &cobra.Command{
@@ -82,6 +83,7 @@ func (c *CLI) GetDataCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// GetAllByTypeCmd возвращает команду cobra для получения перечня хранимых данных.
 func (c *CLI) GetAllByTypeCmd(ctx context.Context) *cobra.Command {
 	var dataType string
 	cmd := &cobra.Command{
@@ -154,6 +156,7 @@ func (c *CLI) GetAllByTypeCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// DeleteDataCmd возвращает команду cobra для удаления данных.
 func (c *CLI) DeleteDataCmd(ctx context.Context) *cobra.Command {
 	var id string
 	cmd := &cobra.Command{
@@ -174,6 +177,7 @@ func (c *CLI) DeleteDataCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// AddDataCmd возвращает команду cobra для сохранения новых данных.
 func (c *CLI) AddDataCmd(ctx context.Context) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "add",
@@ -191,6 +195,7 @@ func (c *CLI) AddDataCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// AddPasswordCmd возвращает команду cobra для сохранения пароля.
 func (c *CLI) AddPasswordCmd(ctx context.Context) *cobra.Command {
 	var password, login, resource, comment string
 	cmd := &cobra.Command{
@@ -220,6 +225,7 @@ func (c *CLI) AddPasswordCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// AddTextCmd возвращает команду cobra для сохранения текстовой информации.
 func (c *CLI) AddTextCmd(ctx context.Context) *cobra.Command {
 	var data, name, comment string
 	cmd := &cobra.Command{
@@ -246,6 +252,7 @@ func (c *CLI) AddTextCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// AddBankCardCmd возвращает команду cobra для сохранения данных банковской карты.
 func (c *CLI) AddBankCardCmd(ctx context.Context) *cobra.Command {
 	cardData := model.BankCardData{}
 	var bankName, comment string
@@ -281,6 +288,7 @@ func (c *CLI) AddBankCardCmd(ctx context.Context) *cobra.Command {
 	return cmd
 }
 
+// AddFileCmd возвращает команду cobra для сохранения файла.
 func (c *CLI) AddFileCmd(ctx context.Context) *cobra.Command {
 	var file, comment string
 	cmd := &cobra.Command{

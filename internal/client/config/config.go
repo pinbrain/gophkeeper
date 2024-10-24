@@ -1,3 +1,4 @@
+// Package config формирует конфигурацию приложения.
 package config
 
 import (
@@ -6,12 +7,14 @@ import (
 	"github.com/spf13/viper"
 )
 
+// ClientConfig определяет структуру конфигурации клиента.
 type ClientConfig struct {
 	ServerAddress string // Адрес gRPC сервера.
 	JWT           string // JWT токен
 	JWTMetaKey    string // Название ключа в мета gRPC запроса.
 }
 
+// InitConfig формирует итоговую конфигурацию приложения.
 func InitConfig() (*ClientConfig, error) {
 	// Файл с конфигурацией
 	viper.SetConfigFile("clientConfig.json")
@@ -39,14 +42,17 @@ func InitConfig() (*ClientConfig, error) {
 	return clientConfig, nil
 }
 
+// GetJWTMetaKey возвращает мета ключ jwt из конфигурации.
 func GetJWTMetaKey() string {
 	return viper.GetString("JWTMetaKey")
 }
 
+// GetJWT возвращает текущий jwt.
 func GetJWT() string {
 	return viper.GetString("jwt")
 }
 
+// SaveJWT сохраняет новый jwt (заменяет существующий и перезаписывает в файле конфигурации).
 func SaveJWT(jwt string) error {
 	viper.Set("jwt", jwt)
 	if err := viper.WriteConfig(); err != nil {

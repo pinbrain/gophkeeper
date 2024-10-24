@@ -1,2 +1,2 @@
-// Package middleware предоставляет различные перехватчики gRPC сервера.
+// Package interceptors предоставляет различные перехватчики gRPC сервера.
 package interceptors

@@ -1,3 +1,4 @@
+// Package utils предоставляет различные универсальные функции, используемые в разных пакетах сервера.
 package utils
 
 import (
@@ -10,6 +11,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// GenerateRandomBytes генерирует рандомный массив байт заданной длины.
 func GenerateRandomBytes(size int) ([]byte, error) {
 	// генерируем криптостойкие случайные байты в b
 	b := make([]byte, size)
@@ -21,6 +23,7 @@ func GenerateRandomBytes(size int) ([]byte, error) {
 	return b, nil
 }
 
+// GeneratePasswordHash генерирует hash из пароля.
 func GeneratePasswordHash(password string) (string, error) {
 	hashedBytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -29,10 +32,12 @@ func GeneratePasswordHash(password string) (string, error) {
 	return string(hashedBytes), nil
 }
 
+// ComparePwdAndHash сравнивает хэш пароля и паролем (проверка валидности пароля).
 func ComparePwdAndHash(password, hash string) bool {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)) == nil
 }
 
+// GenerateUserKey генерирует ключ пользователя для шифрования данных.
 func GenerateUserKey() ([]byte, error) {
 	key, err := GenerateRandomBytes(2 * aes.BlockSize)
 	if err != nil {
@@ -41,6 +46,7 @@ func GenerateUserKey() ([]byte, error) {
 	return key, nil
 }
 
+// Encrypt шифрует данные с помощью переданного ключа.
 func Encrypt(data []byte, key string) ([]byte, error) {
 	keyB, err := hex.DecodeString(key)
 	if err != nil {
@@ -64,6 +70,7 @@ func Encrypt(data []byte, key string) ([]byte, error) {
 	return dst, nil
 }
 
+// Decrypt расшифровывает данные с помощью ключа.
 func Decrypt(data []byte, key string) ([]byte, error) {
 	keyB, err := hex.DecodeString(key)
 	if err != nil {
@@ -78,8 +85,8 @@ func Decrypt(data []byte, key string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	nonceSize := aesgcm.NonceSize()
+	// получаем вектор инициализации
 	nonce, ciphertext := data[:nonceSize], data[nonceSize:]
 	plain, err := aesgcm.Open(nil, nonce, ciphertext, nil)
 	if err != nil {

@@ -16,6 +16,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// GRPCUserHandler определяет структуру обработчика grpc запросов в части работы с пользователями.
 type GRPCUserHandler struct {
 	pb.UnimplementedUserServiceServer
 	masterKey  string
@@ -24,6 +25,7 @@ type GRPCUserHandler struct {
 	log        *logrus.Entry
 }
 
+// NewGRPCUserHandler создает и возвращает новый обработчик grpc запросов в части работы с пользователями.
 func NewGRPCUserHandler(
 	masterKey string, storage storage.Storage, jwtService *jwt.Service, log *logrus.Entry,
 ) *GRPCUserHandler {
@@ -35,6 +37,7 @@ func NewGRPCUserHandler(
 	}
 }
 
+// Register регистрирует нового пользователя.
 func (h *GRPCUserHandler) Register(ctx context.Context, in *pb.RegisterReq) (*pb.RegisterRes, error) {
 	if in.GetLogin() == "" || in.GetPassword() == "" {
 		return nil, status.Error(codes.InvalidArgument, "Некорректные входные данные")
@@ -83,6 +86,7 @@ func (h *GRPCUserHandler) Register(ctx context.Context, in *pb.RegisterReq) (*pb
 	return response, nil
 }
 
+// Login аутентифицирует пользователя по логину и паролю.
 func (h *GRPCUserHandler) Login(ctx context.Context, in *pb.LoginReq) (*pb.LoginRes, error) {
 	if in.GetLogin() == "" || in.GetPassword() == "" {
 		return nil, status.Error(codes.InvalidArgument, "Некорректные входные данные")

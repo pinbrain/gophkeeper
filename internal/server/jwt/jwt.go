@@ -1,3 +1,4 @@
+// Package jwt содержит реализацию сервиса для работы с jwt.
 package jwt
 
 import (
@@ -10,18 +11,21 @@ import (
 	"github.com/pinbrain/gophkeeper/internal/server/config"
 )
 
+// Service описывает структуру jwt сервиса.
 type Service struct {
 	lifeTime  time.Duration
 	secretKey string
 	mdJWTKey  string
 }
 
+// Claims описывает структуру данных jwt.
 type Claims struct {
 	jwt.RegisteredClaims
 	UserID string
 	Login  string
 }
 
+// NewJWTService создает и возвращает новый jwt сервис.
 func NewJWTService(cfg config.JWTConfig) *Service {
 	return &Service{
 		lifeTime:  time.Duration(cfg.LifeTime) * time.Minute,
@@ -30,6 +34,7 @@ func NewJWTService(cfg config.JWTConfig) *Service {
 	}
 }
 
+// BuildJWTSting формирует jwt с переданными данными.
 func (j *Service) BuildJWTSting(user *model.User) (string, error) {
 	if user.ID == "" || user.Login == "" {
 		return "", errors.New("not valid user data")
@@ -49,6 +54,7 @@ func (j *Service) BuildJWTSting(user *model.User) (string, error) {
 	return tokenString, nil
 }
 
+// GetJWTClaims возвращает данные из jwt, проверяя его валидность.
 func (j *Service) GetJWTClaims(tokenString string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
@@ -66,6 +72,7 @@ func (j *Service) GetJWTClaims(tokenString string) (*Claims, error) {
 	return claims, nil
 }
 
+// GetMdJWTKey возвращает ключ jwt в метаданных.
 func (j *Service) GetMdJWTKey() string {
 	return j.mdJWTKey
 }

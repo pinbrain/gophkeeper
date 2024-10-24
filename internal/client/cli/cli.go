@@ -7,16 +7,19 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// Service описывает структуру сервиса для работы с данными и сервером.
 type Service interface {
 	UserService
 	VaultService
 }
 
+// UserService описывает методы для работы с регистрацией и аутентификацией.
 type UserService interface {
 	Register(ctx context.Context, login, password string) (token string, err error)
 	Login(ctx context.Context, login, password string) (token string, err error)
 }
 
+// VaultService описывает методы для работы с данными.
 type VaultService interface {
 	AddPassword(ctx context.Context, data string, meta model.PasswordMeta) error
 	AddText(ctx context.Context, data string, meta model.TextMeta) error
@@ -27,6 +30,7 @@ type VaultService interface {
 	DeleteData(ctx context.Context, id string) error
 }
 
+// CLI описывает структуру cli приложения.
 type CLI struct {
 	service Service
 
@@ -35,6 +39,7 @@ type CLI struct {
 	vaultCMD *cobra.Command
 }
 
+// NewCLI создает и возвращает новое cli приложение.
 func NewCLI(ctx context.Context, service Service) *CLI {
 	cli := &CLI{
 		service: service,
@@ -71,6 +76,7 @@ func NewCLI(ctx context.Context, service Service) *CLI {
 	return cli
 }
 
+// Execute запускает обработку команды.
 func (c *CLI) Execute() error {
 	return c.rootCMD.Execute()
 }
