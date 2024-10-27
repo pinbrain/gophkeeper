@@ -22,10 +22,9 @@ type Server struct {
 }
 
 // NewServer создает и возвращает новый сервер.
-func NewServer(cfg *config.ServerConfig, logger *logrus.Logger) (*Server, error) {
+func NewServer(ctx context.Context, cfg *config.ServerConfig, logger *logrus.Logger) (*Server, error) {
 	log := logger.WithField("instance", "server")
 
-	ctx := context.Background()
 	storage, err := postgres.NewStorage(ctx, cfg.DSN, logger)
 	if err != nil {
 		return nil, fmt.Errorf("failed to run storage: %w", err)
@@ -58,6 +57,8 @@ func (s *Server) Stop() error {
 	if err := s.transport.Stop(); err != nil {
 		s.log.Errorf("an error occurred during grpc server shutdown: %v", err)
 	}
+	s.log.Info("gRPC server stopped")
 	s.storage.Close()
+	s.log.Info("Storage closed")
 	return nil
 }
