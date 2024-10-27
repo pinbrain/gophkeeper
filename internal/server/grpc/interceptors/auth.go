@@ -23,7 +23,7 @@ import (
 type AuthInterceptor struct {
 	masterKey  string
 	storage    storage.Storage
-	jwtService *jwt.Service
+	jwtService jwt.ServiceI
 
 	protectedServices map[string]bool
 
@@ -32,7 +32,7 @@ type AuthInterceptor struct {
 
 // NewAuthInterceptor создает обработчик авторизации и аутентификации.
 func NewAuthInterceptor(
-	masterKey string, storage storage.Storage, jwtService *jwt.Service, log *logrus.Entry,
+	masterKey string, storage storage.Storage, jwtService jwt.ServiceI, log *logrus.Entry,
 ) *AuthInterceptor {
 	return &AuthInterceptor{
 		masterKey:  masterKey,
@@ -62,7 +62,7 @@ func (i *AuthInterceptor) AuthenticateUser(
 			if err != nil {
 				switch {
 				case errors.Is(err, postgres.ErrNoUser):
-					return nil, status.Error(codes.AlreadyExists, "Пользователь не найден")
+					return nil, status.Error(codes.NotFound, "Пользователь не найден")
 				default:
 					i.log.WithError(err).Error("error while authenticating user by jwt")
 					return nil, status.Error(codes.Internal, "Не удалось получить данные пользователя из БД")

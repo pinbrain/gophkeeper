@@ -21,13 +21,13 @@ type GRPCUserHandler struct {
 	pb.UnimplementedUserServiceServer
 	masterKey  string
 	storage    storage.Storage
-	jwtService *jwt.Service
+	jwtService jwt.ServiceI
 	log        *logrus.Entry
 }
 
 // NewGRPCUserHandler создает и возвращает новый обработчик grpc запросов в части работы с пользователями.
 func NewGRPCUserHandler(
-	masterKey string, storage storage.Storage, jwtService *jwt.Service, log *logrus.Entry,
+	masterKey string, storage storage.Storage, jwtService jwt.ServiceI, log *logrus.Entry,
 ) *GRPCUserHandler {
 	return &GRPCUserHandler{
 		masterKey:  masterKey,
@@ -44,18 +44,18 @@ func (h *GRPCUserHandler) Register(ctx context.Context, in *pb.RegisterReq) (*pb
 	}
 	passwordHash, err := utils.GeneratePasswordHash(in.GetPassword())
 	if err != nil {
-		h.log.WithError(err).Error("Error while creating new user")
+		h.log.WithError(err).Error("Error while creating new user - failed to generate password hash")
 		return nil, status.Error(codes.Internal, "Internal server error")
 	}
 
 	secretKey, err := utils.GenerateUserKey()
 	if err != nil {
-		h.log.WithError(err).Error("Error while creating new user")
+		h.log.WithError(err).Error("Error while creating new user - failed to generate user secret key")
 		return nil, status.Error(codes.Internal, "Internal server error")
 	}
 	encSecretKey, err := utils.Encrypt(secretKey, h.masterKey)
 	if err != nil {
-		h.log.WithError(err).Error("Error while creating new user")
+		h.log.WithError(err).Error("Error while creating new user - failed to encrypt user secret key")
 		return nil, status.Error(codes.Internal, "Internal server error")
 	}
 
@@ -64,20 +64,21 @@ func (h *GRPCUserHandler) Register(ctx context.Context, in *pb.RegisterReq) (*pb
 		PasswordHash:    passwordHash,
 		EncryptedSecret: hex.EncodeToString(encSecretKey),
 	}
-	_, err = h.storage.CreateUser(ctx, user)
+	id, err := h.storage.CreateUser(ctx, user)
 	if err != nil {
 		switch {
 		case errors.Is(err, postgres.ErrLoginTaken):
 			return nil, status.Error(codes.AlreadyExists, "Пользователь с таким логином уже существует")
 		default:
-			h.log.WithError(err).Error("Error while creating new user")
+			h.log.WithError(err).Error("Error while creating new user - failed to save user in DB")
 			return nil, status.Error(codes.Internal, "Не удалось создать пользователя")
 		}
 	}
+	user.ID = id
 
 	jwt, err := h.jwtService.BuildJWTSting(user)
 	if err != nil {
-		h.log.WithError(err).Error("Error while creating new user")
+		h.log.WithError(err).Error("Error while creating new user - failed to generate jwt")
 		return nil, status.Error(codes.Internal, "Internal server error")
 	}
 	response := &pb.RegisterRes{

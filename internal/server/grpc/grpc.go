@@ -36,7 +36,7 @@ type TransportConfig struct {
 
 // NewGRPCTransport создает и возвращает новый grpc сервер.
 func NewGRPCTransport(
-	cfg TransportConfig, storage storage.Storage, jwtService *jwt.Service, logger *logrus.Logger,
+	cfg TransportConfig, storage storage.Storage, jwtService jwt.ServiceI, logger *logrus.Logger,
 ) (*Transport, error) {
 	tlsCredentials, err := credentials.NewServerTLSFromFile("cert/server-cert.pem", "cert/server-key.pem")
 	if err != nil {

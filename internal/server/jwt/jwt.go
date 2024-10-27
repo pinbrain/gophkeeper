@@ -11,6 +11,12 @@ import (
 	"github.com/pinbrain/gophkeeper/internal/server/config"
 )
 
+type ServiceI interface {
+	BuildJWTSting(user *model.User) (string, error)
+	GetJWTClaims(tokenString string) (*Claims, error)
+	GetMdJWTKey() string
+}
+
 // Service описывает структуру jwt сервиса.
 type Service struct {
 	lifeTime  time.Duration

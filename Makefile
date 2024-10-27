@@ -27,6 +27,12 @@ proto:
 		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
 		internal/proto/vault.proto
 
+mocks:
+	@mockgen -source=internal/storage/storage.go -destination=internal/storage/mocks/mock_storage.gen.go -package=mocks
+	@mockgen -source=internal/server/jwt/jwt.go -destination=internal/server/jwt/mocks/mock_jwt.gen.go -package=jwt_mocks
+	@mockgen -source=internal/proto/user_grpc.pb.go -destination=internal/proto/mocks/mock_user_grpc.gen.go -package=mocks
+	@mockgen -source=internal/proto/vault_grpc.pb.go -destination=internal/proto/mocks/mock_vault_grpc.gen.go -package=mocks
+
 migration_down:
 	@goose -dir internal/storage/postgres/migrations \
 		postgres "host=192.168.0.27 port=5412 user=keeper password=keeper dbname=keeper sslmode=disable" \
