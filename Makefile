@@ -1,5 +1,8 @@
+CLI_BUILD_DATE=`date +'%Y-%m-%d %H:%M:%S'`
+CLI_BUILD_VERSION=0.1.0
+
 build_client:
-	@go build -o cmd/client/client cmd/client/main.go
+	@go build -ldflags "-X main.Version=$(CLI_BUILD_VERSION) -X 'main.BuildTime=$(CLI_BUILD_DATE)'" -o cmd/client/client cmd/client/main.go
 
 build_server:
 	@go build -o cmd/server/server cmd/server/main.go

@@ -7,8 +7,13 @@ import (
 	"github.com/pinbrain/gophkeeper/internal/client/config"
 )
 
+var (
+	Version   = "N/A"
+	BuildTime = "N/A"
+)
+
 func main() {
-	cfg, err := config.InitConfig()
+	cfg, err := config.InitConfig(Version, BuildTime)
 	if err != nil {
 		panic(err)
 	}

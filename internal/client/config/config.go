@@ -15,7 +15,7 @@ type ClientConfig struct {
 }
 
 // InitConfig формирует итоговую конфигурацию приложения.
-func InitConfig() (*ClientConfig, error) {
+func InitConfig(Version, BuildTime string) (*ClientConfig, error) {
 	// Файл с конфигурацией
 	viper.SetConfigFile("clientConfig.json")
 	viper.SetConfigType("json")
@@ -34,6 +34,9 @@ func InitConfig() (*ClientConfig, error) {
 	if err := viper.ReadInConfig(); err != nil {
 		return nil, err
 	}
+
+	viper.Set("Version", Version)
+	viper.Set("BuildTime", BuildTime)
 
 	clientConfig := &ClientConfig{}
 	if err := viper.Unmarshal(clientConfig); err != nil {
@@ -59,4 +62,9 @@ func SaveJWT(jwt string) error {
 		return fmt.Errorf("не удалось сохранить JWT токен: %w", err)
 	}
 	return nil
+}
+
+// GetBuildInfo возвращает инфо о сборке - версию и дату
+func GetBuildInfo() (string, string) {
+	return viper.GetString("Version"), viper.GetString("BuildTime")
 }

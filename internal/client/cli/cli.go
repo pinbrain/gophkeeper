@@ -2,7 +2,9 @@ package cli
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/pinbrain/gophkeeper/internal/client/config"
 	"github.com/pinbrain/gophkeeper/internal/model"
 	"github.com/spf13/cobra"
 )
@@ -58,6 +60,16 @@ func NewCLI(ctx context.Context, service Service) *CLI {
 		},
 	}
 
+	aboutCMD := &cobra.Command{
+		Use:   "about",
+		Short: "О программе",
+		Long:  "Информация о версии и дате сборки клиента",
+		Run: func(_ *cobra.Command, _ []string) {
+			version, date := config.GetBuildInfo()
+			fmt.Printf("version=%s, build time=%s\n", version, date)
+		},
+	}
+
 	cli.userCMD.AddCommand(
 		cli.RegisterCmd(ctx),
 		cli.LoginCmd(ctx),
@@ -72,6 +84,7 @@ func NewCLI(ctx context.Context, service Service) *CLI {
 
 	cli.rootCMD.AddCommand(cli.userCMD)
 	cli.rootCMD.AddCommand(cli.vaultCMD)
+	cli.rootCMD.AddCommand(aboutCMD)
 
 	return cli
 }
