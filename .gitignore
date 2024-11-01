@@ -22,3 +22,9 @@ vendor/
 .idea
 .vscode
 .env
+
+config.json
+clientConfig.json
+serverConfig.json
+test.go
+cert
